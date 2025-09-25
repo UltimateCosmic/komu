@@ -7,45 +7,47 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
-          <div className="md:col-span-2">
-            <img src="/komu.png" alt="Komu Logo" className="h-8 w-auto mb-4" />
+            <div className="md:col-span-2">
+            <a href="/">
+              <img src="/komu.png" alt="Komu Logo" className="h-8 w-auto mb-4" />
+            </a>
             <p className="text-white/70 text-sm mb-4 max-w-md">
               Transformamos espacios de trabajo con pizarras premium diseñadas para la productividad y el estilo.
               Calidad excepcional para profesionales exigentes.
             </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10 p-2">
-                <Facebook className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="cursor-pointer text-white/60 hover:text-white hover:bg-white/10 p-2">
+              <Facebook className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" className="text-white/60 hover:text-white hover:bg-white/10 p-2">
-                <Instagram className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="cursor-pointer text-white/60 hover:text-white hover:bg-white/10 p-2">
+              <Instagram className="h-4 w-4" />
               </Button>
             </div>
-          </div>
+            </div>
 
           {/* Quick Links */}
           <div>
             <h4 className="text-white font-medium mb-4">Enlaces Rápidos</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a className="text-white/70 hover:text-white transition-colors">
-                  Productos
-                </a>
+              <a className="text-white/70 hover:text-white transition-colors cursor-pointer">
+                Productos
+              </a>
               </li>
               <li>
-                <a className="text-white/70 hover:text-white transition-colors">
-                  Categorías
-                </a>
+              <a className="text-white/70 hover:text-white transition-colors cursor-pointer">
+                Categorías
+              </a>
               </li>
               <li>
-                <a className="text-white/70 hover:text-white transition-colors">
-                  Ofertas
-                </a>
+              <a className="text-white/70 hover:text-white transition-colors cursor-pointer">
+                Ofertas
+              </a>
               </li>
               <li>
-                <a className="text-white/70 hover:text-white transition-colors">
-                  Sobre Nosotros
-                </a>
+              <a className="text-white/70 hover:text-white transition-colors cursor-pointer">
+                Sobre Nosotros
+              </a>
               </li>
             </ul>
           </div>

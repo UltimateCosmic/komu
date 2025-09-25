@@ -45,7 +45,7 @@ export default function ProductCard({
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
-          <Badge variant="destructive" className="absolute top-3 left-3 bg-foreground text-balance">
+          <Badge variant="destructive" className="font-display absolute top-3 left-3 bg-foreground text-balance">
             {product.category}
           </Badge>
         </div>
@@ -53,9 +53,9 @@ export default function ProductCard({
           <h3 className="font-medium text-foreground mb-2 text-pretty line-clamp-2">{product.name}</h3>
           <p className="text-sm text-muted-foreground mb-4 line-clamp-2 text-pretty">{product.description}</p>
           <div className="space-y-3">
-            <span className="text-2xl font-light text-foreground mb-2 inline-block">S/ {product.price.toFixed(2)}</span>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
+            <span className="font-display text-2xl font-light text-foreground mb-2 inline-block">S/ {product.price.toFixed(2)}</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-1">
                 <Button
                   size="sm"
                   variant="outline"
@@ -81,17 +81,19 @@ export default function ProductCard({
                   <Plus className="h-3 w-3" />
                 </Button>
               </div>
+              <div className="flex-1">
                 <Button
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleAddToCart()
-                }}
-                className="cursor-pointer bg-red-600 hover:bg-red-700 text-white"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleAddToCart()
+                  }}
+                  className="w-full cursor-pointer"
                 >
-                <ShoppingCart className="h-4 w-4 mr-1" />
-                Agregar
+                  <ShoppingCart className="h-4 w-4 mr-1" />
+                  Agregar
                 </Button>
+              </div>
             </div>
           </div>
         </div>
