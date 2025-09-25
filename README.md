@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Komu Catalog
 
-## Getting Started
+Este es un proyecto de caso técnico para la gestión de un Catálogo de Pizarras o Antenas, desarrollado para postular a una empresa.
 
-First, run the development server:
+Proyecto desarrollado con [Next.js](https://nextjs.org) y [Prisma](https://www.prisma.io/), inicializado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Tabla de Contenidos
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Base de Datos y Prisma](#base-de-datos-y-prisma)
+- [Scripts Disponibles](#scripts-disponibles)
+
+## Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone <url-del-repo>
+   cd komu-catalog
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+## Uso
+
+Inicia el servidor de desarrollo:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Puedes editar la página principal modificando `app/page.tsx`. Los cambios se reflejan automáticamente.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estructura del Proyecto
 
-## Learn More
+```
+components.json
+prisma/           # Esquema y migraciones de la base de datos
+app/              # Rutas, páginas y API
+components/       # Componentes reutilizables (UI)
+lib/              # Utilidades y configuración de Prisma
+public/           # Archivos estáticos
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Base de Datos y Prisma
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- El esquema de la base de datos se encuentra en `prisma/schema.prisma`.
+- Para aplicar migraciones y generar el cliente Prisma:
+  ```bash
+  npx prisma migrate dev
+  npx prisma generate
+  ```
+- La base de datos de desarrollo es SQLite (`prisma/dev.db`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts Disponibles
 
-## Deploy on Vercel
+- `dev`: Inicia el servidor de desarrollo.
+- `build`: Compila la aplicación para producción.
+- `start`: Inicia la aplicación en modo producción.
+- `prisma`: Ejecuta comandos de Prisma (migraciones, generación de cliente, etc).
+  
+  Se pueden insertar productos de prueba:
+  
+  ```bash
+  npx prisma studio
+  ```
+  Esto abre una UI en el navegador donde se pueden agregar productos manualmente.
+- `lint`: Ejecuta el linter para mantener la calidad del código.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Recursos
+- [Documentación Next.js](https://nextjs.org/docs)
+- [Documentación Prisma](https://www.prisma.io/docs)
+- [Aprende Next.js](https://nextjs.org/learn)
+- [Repositorio Next.js en GitHub](https://github.com/vercel/next.js)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Despliegue
+
+La forma más sencilla de desplegar tu app Next.js es usando [Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
+
+Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
