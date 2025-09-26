@@ -1,83 +1,155 @@
 # Komu Catalog
 
-Este es un proyecto de caso técnico para la gestión de un Catálogo de Pizarras o Antenas, desarrollado para postular a una empresa.
+Este proyecto es un **Catálogo de Pizarras** desarrollado como caso técnico para postular a Komu.  
+La aplicación permite explorar productos, filtrarlos por categoría o rango de precio, visualizar sus detalles y gestionar un carrito de compras con sincronización global.
 
-Proyecto desarrollado con [Next.js](https://nextjs.org) y [Prisma](https://www.prisma.io/), inicializado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Construido con tecnologías modernas y buenas prácticas para entregar una solución clara, escalable y profesional.
 
-## Tabla de Contenidos
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Base de Datos y Prisma](#base-de-datos-y-prisma)
-- [Scripts Disponibles](#scripts-disponibles)
+---
 
-## Instalación
+## Tecnologías Principales
 
-1. Clona el repositorio:
-   ```bash
-   git clone <url-del-repo>
-   cd komu-catalog
-   ```
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
+- **[Next.js 15](https://nextjs.org/)**  
+  Framework de React moderno, con `app router`, soporte a Server/Client components y optimización integrada.
 
-## Uso
+- **[Prisma ORM](https://www.prisma.io/)**  
+  - Justificación: Prisma se utilizó por su tipado fuerte con TypeScript, facilidad para definir relaciones (ej. productos ↔ imágenes) y tooling como Prisma Studio para manipular datos.  
+  - Base de datos: **SQLite** en desarrollo, lo que facilita portabilidad y rapidez.
 
-Inicia el servidor de desarrollo:
-```bash
-npm run dev
-```
+- **[TailwindCSS 4](https://tailwindcss.com/)**  
+  Para el diseño responsivo y utilidades de estilos.
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
+- **[shadcn/ui](https://ui.shadcn.com/)**  
+  Librería de componentes accesibles y personalizables (ej. `Button`, `Card`, `Select`, `Slider`, `Sheet`).
 
-Puedes editar la página principal modificando `app/page.tsx`. Los cambios se reflejan automáticamente.
+- **[Lucide React](https://lucide.dev/)**  
+  Conjunto de íconos modernos (ej. carrito, filtros, navegación).
+
+- **Fuentes Google Fonts**  
+  - `Inter`: fuente principal recomendada por shadcn.  
+  - `Poppins`: usada para headers y subtítulos (ej. Categorías, Rango de Precio).
+
+---
 
 ## Estructura del Proyecto
 
 ```
-components.json
-prisma/           # Esquema y migraciones de la base de datos
-app/              # Rutas, páginas y API
-components/       # Componentes reutilizables (UI)
-lib/              # Utilidades y configuración de Prisma
-public/           # Archivos estáticos
+komu-catalog/
+├─ app/                 # Rutas y páginas
+│  ├─ layout.tsx        # Layout global con Header, Footer y CartProvider
+│  ├─ page.tsx          # Página principal con filtros y productos
+│  ├─ [id]/page.tsx     # Página de detalle del producto
+│  └─ api/[id]/route.ts # API REST para productos individuales
+├─ components/          # Componentes UI reutilizables (shadcn + custom)
+│  ├─ Header.tsx
+│  ├─ Footer.tsx
+│  ├─ ProductCard.tsx
+│  └─ ui/               # Componentes shadcn exportados
+├─ context/CartContext.tsx # Contexto global del carrito
+├─ prisma/
+│  ├─ schema.prisma     # Definición del modelo (Product, Image)
+│  └─ seed.ts           # Script de seed con productos reales
+├─ public/              # Archivos estáticos (ej. logo komu.png)
+└─ package.json
 ```
 
-## Base de Datos y Prisma
+---
 
-- El esquema de la base de datos se encuentra en `prisma/schema.prisma`.
-- Para aplicar migraciones y generar el cliente Prisma:
-  ```bash
-  npx prisma migrate dev
-  npx prisma generate
-  ```
-- La base de datos de desarrollo es SQLite (`prisma/dev.db`).
+## Base de Datos con Prisma
 
-## Scripts Disponibles
+Modelo definido en `prisma/schema.prisma`:
 
-- `dev`: Inicia el servidor de desarrollo.
-- `build`: Compila la aplicación para producción.
-- `start`: Inicia la aplicación en modo producción.
-- `prisma`: Ejecuta comandos de Prisma (migraciones, generación de cliente, etc).
-  
-  Se pueden insertar productos de prueba:
-  
-  ```bash
-  npx prisma studio
-  ```
-  Esto abre una UI en el navegador donde se pueden agregar productos manualmente.
-- `lint`: Ejecuta el linter para mantener la calidad del código.
+```prisma
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  category    String
+  images      Image[]
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+}
+```
+
+### Seed de datos
+
+Archivo `prisma/seed.ts` incluye productos reales (extraídos de Tay Loy) con múltiples imágenes.
+
+Ejecutar:
+
+```bash
+npx prisma db seed
+```
+
+Scripts configurados en `package.json`:
+
+```json
+"prisma": {
+  "seed": "tsx prisma/seed.ts"
+}
+```
+
+---
+
+## Funcionalidades
+
+- **Página principal** (`/`)  
+  - Filtros: Categorías (Acrílica, Magnética, Vidrio, etc.) y rango de precios.  
+  - Ordenamiento: nombre o precio (asc/desc).  
+  - Vista responsiva con grid adaptable.
+
+- **Carrito global**  
+  - Implementado con Context API (`CartContext`).  
+  - Se mantiene al navegar entre páginas.  
+  - Muestra cantidades, subtotal y permite modificar/eliminar productos.
+
+- **Detalle de producto** (`/[id]`)  
+  - Vista ampliada con galería de imágenes.  
+  - Botón para agregar cantidades al carrito.  
+  - Sección de features (envío gratis, garantía, devoluciones).  
+  - Breadcrumb con botón de retorno.
+
+- **API interna**  
+  - `GET /api/[id]`: devuelve producto por ID (con imágenes).  
+  - `PUT /api/[id]`: actualizar producto.  
+  - `DELETE /api/[id]`: eliminar producto.  
+  - Futuro escalable para `/api/products`.
+
+---
+
+## 🔧 Scripts Disponibles
+
+- `npm run dev` → Inicia servidor en desarrollo.  
+- `npm run build` → Compila para producción.  
+- `npm run start` → Ejecuta compilado.  
+- `npm run lint` → Corre el linter.  
+- `npx prisma studio` → Interfaz gráfica para manipular BD.  
+- `npx prisma db seed` → Poblar la BD con productos iniciales.
+
+---
+
+## Conclusión
+
+Este proyecto demuestra:
+- Uso profesional de **Next.js + Prisma** para un CRUD completo.  
+- Implementación de **UI moderna y accesible** con shadcn/ui y Tailwind.  
+- Manejo de **estado global** para carrito con Context API.  
+- Semillas de datos realistas para pruebas (Tay Loy).  
+
+Entrega lista para producción y fácil de desplegar en [Vercel](https://vercel.com).
+
+---
 
 ## Recursos
-- [Documentación Next.js](https://nextjs.org/docs)
-- [Documentación Prisma](https://www.prisma.io/docs)
-- [Aprende Next.js](https://nextjs.org/learn)
-- [Repositorio Next.js en GitHub](https://github.com/vercel/next.js)
 
-## Despliegue
-
-La forma más sencilla de desplegar tu app Next.js es usando [Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme).
-
-Consulta la [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
+- [Next.js Docs](https://nextjs.org/docs)  
+- [Prisma Docs](https://www.prisma.io/docs)  
+- [shadcn/ui](https://ui.shadcn.com/)  
+- [Lucide React](https://lucide.dev/)  
