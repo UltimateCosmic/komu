@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -8,9 +9,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
             <div className="md:col-span-2">
-            <a href="/">
+            <Link href="/">
               <img src="/komu.png" alt="Komu Logo" className="h-8 w-auto mb-4" />
-            </a>
+            </Link>
             <p className="text-white/70 text-sm mb-4 max-w-md">
               Transformamos espacios de trabajo con pizarras premium diseñadas para la productividad y el estilo.
               Calidad excepcional para profesionales exigentes.

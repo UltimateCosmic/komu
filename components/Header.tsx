@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Minus, Plus, Search, ShoppingCart, X } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useCart } from "@/context/CartContext"
+import Link from "next/link"
 
 export default function Header() {
   const { cart, updateQuantity, removeFromCart, getTotalItems, getTotalPrice } = useCart()
@@ -15,9 +16,9 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
-            <a href="/">
+            <Link href="/">
               <img src="/komu.png" alt="Komu Logo" className="h-6 w-auto" />
-            </a>
+            </Link>
           </div>
 
           <div className="flex items-center space-x-4">
