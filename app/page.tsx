@@ -18,131 +18,26 @@ type Product = {
 
 const categories = ["Acrílica", "Magnética", "Vidrio", "Corcho", "Blanca", "Multiusos"]
 
-// JSON de prueba incrustado
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    name: "Pizarra De Corcho Económica 40 X 60 Cm",
-    description:
-      "Pizarra de corcho de alta calidad y tamaño mediano (40 x 60 cm), ideal para uso en el hogar, la oficina o el aula. Superficie duradera y fácil de usar, perfecta para fijar notas, recordatorios y fotos con chinchetas. Ligera y fácil de instalar.",
-    price: 29.6,
-    category: "Corcho",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-de-corcho-economica-40x60-cm-85900-default-1.jpg",
-        alt: "Pizarra de Corcho 40x60",
-      },
-    ],
-  },
-  {
-    id: "2",
-    name: "Pizarra Acrílica Económica 20 X 30 Cm",
-    description:
-      "Pizarra acrílica de alta calidad y tamaño compacto (20 x 30 cm), superficie suave y fácil de limpiar. Compatible con marcadores de borrado en seco.",
-    price: 8.9,
-    category: "Acrílica",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-acrilica-economica-20x30-cm-85901-default-1.jpg",
-        alt: "Pizarra Acrílica 20x30",
-      },
-    ],
-  },
-  {
-    id: "3",
-    name: "Pizarra Laminada 1.00 X 1.50 Mt Blanca",
-    description:
-      "Descubre esta pizarra blanca laminada para cálculos y escritura en gran formato.",
-    price: 184.7,
-    category: "Blanca",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-lamin-blanc-100-x-150-mt-4952-default-1.jpg",
-        alt: "Pizarra Laminada 100x150",
-      },
-    ],
-  },
-  {
-    id: "4",
-    name: "Pizarra Acrílica Económica 30 X 40 Cm",
-    description:
-      "Pizarra acrílica económica y duradera en formato 30 x 40 cm.",
-    price: 13.4,
-    category: "Acrílica",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-acrilica-econo-30x40-cm-94988-default-1.jpg",
-        alt: "Pizarra Acrílica 30x40",
-      },
-    ],
-  },
-  {
-    id: "5",
-    name: "Pizarra Multiusos Arti Creativo 20.8 X 29.5 Cm",
-    description:
-      "Pizarra fabricada en MDF, irrompible e ideal para dibujar, escribir y planificar.",
-    price: 10.2,
-    category: "Multiusos",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-multiusos-arti-208-x-295-cm-35495-default-1.jpg",
-        alt: "Pizarra Multiusos Arti Creativo",
-      },
-    ],
-  },
-  {
-    id: "6",
-    name: "Pizarra De Corcho Económica 20 X 30 Cm",
-    description:
-      "Pizarra de corcho compacta (20 x 30 cm), ideal para notas y recordatorios en espacios pequeños.",
-    price: 10.7,
-    category: "Corcho",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-de-corcho-economica-20x30-cm-85899-default-1.jpg",
-        alt: "Pizarra de Corcho 20x30",
-      },
-    ],
-  },
-  {
-    id: "7",
-    name: "Pizarra De Corcho Importada 0.45 X 0.60 M",
-    description:
-      "Pizarra de corcho importada (0.45 x 0.60 m), superficie resistente y fácil de usar.",
-    price: 49.1,
-    category: "Corcho",
-    images: [
-      {
-        url: "https://production-tailoy-repo-magento-statics.s3.amazonaws.com/imagenes/872x872/productos/i/p/i/pizarra-de-corcho-045-x-060-mt-1433-default-1.jpg",
-        alt: "Pizarra de Corcho Importada 45x60",
-      },
-    ],
-  },
-]
-
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null)
   const [priceRange, setPriceRange] = useState([0, 200])
   const [sortOrder, setSortOrder] = useState("name-asc")
+  const [loading, setLoading] = useState(true)
 
   const { addToCart } = useCart()
 
   // Traer productos desde nuestra API (que usa Prisma)
-  /*useEffect(() => {
+  useEffect(() => {
     async function fetchProducts() {
-      const res = await fetch("/api/products")
+      setLoading(true)
+      const res = await fetch("/api")
       const data = await res.json()
       setProducts(data)
+      setLoading(false)
     }
     fetchProducts()
-  }, [])*/
-
-  // Usar el JSON mock directamente (temporal)
-  useEffect(() => {
-    // aquí usamos el JSON mock
-    setProducts(mockProducts)
   }, [])
 
   const filteredAndSortedProducts = products
@@ -259,7 +154,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedProducts.length === 0 ? (
+                {loading ? (
+                  <div className="col-span-full flex flex-col items-center justify-center py-16">
+                    <img src="/komu.png" alt="Sin productos" className="h-16 w-auto mb-6 opacity-30 invert" />
+                    <p className="text-lg text-muted-foreground">Cargando productos...</p>
+                  </div>
+                ) : filteredAndSortedProducts.length === 0 ? (
                   <div className="col-span-full flex flex-col items-center justify-center py-16">
                     <img src="/komu.png" alt="Sin productos" className="h-16 w-auto mb-6 opacity-30 invert" />
                     <p className="text-lg text-muted-foreground">No se encontraron productos para los filtros seleccionados.</p>
