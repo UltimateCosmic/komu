@@ -124,7 +124,45 @@ Scripts configurados en `package.json`:
 
 ---
 
-## 🔧 Scripts Disponibles
+## Despliegue en Vercel
+
+El proyecto está desplegado en:  
+[https://komu-murex.vercel.app/](https://komu-murex.vercel.app/)
+
+### Estado actual
+- El frontend y las rutas API funcionan correctamente en Vercel.  
+- Sin embargo, **no se pueden visualizar los productos** porque la base de datos en desarrollo está configurada con **SQLite local** (`prisma/dev.db`), y este tipo de base de datos **no es compatible con Vercel**:  
+  - Cada función serverless corre en un entorno efímero.  
+  - Los archivos locales (`.db`) no se persisten entre llamadas.  
+
+### Solución propuesta
+Para un despliegue productivo se recomienda usar un **proveedor de base de datos en la nube**:  
+- [Neon](https://neon.tech) → PostgreSQL serverless.  
+- [Supabase](https://supabase.com) → PostgreSQL gestionado.  
+- [PlanetScale](https://planetscale.com) → MySQL escalable.  
+
+Con esta configuración:  
+1. Se reemplaza la `DATABASE_URL` en `.env` con la cadena del proveedor.  
+2. Se ejecutan las migraciones en la base remota:  
+   ```bash
+   npx prisma migrate deploy
+   ```  
+3. La API podrá entregar productos correctamente en producción.
+
+---
+
+## Estado del Caso Técnico
+
+- Catálogo de productos con filtros, orden y búsqueda.  
+- Página de detalle con imágenes múltiples, descripción y compra.  
+- Carrito de compras global sincronizado vía Context.  
+- Base de datos con **Prisma ORM** y datos seed.  
+- UI moderna con **TailwindCSS + shadcn/ui + Lucide icons**.  
+- Despliegue funcional en **Vercel** (pendiente conectar BD en la nube).  
+
+---
+
+## Scripts Disponibles
 
 - `npm run dev` → Inicia servidor en desarrollo.  
 - `npm run build` → Compila para producción.  
